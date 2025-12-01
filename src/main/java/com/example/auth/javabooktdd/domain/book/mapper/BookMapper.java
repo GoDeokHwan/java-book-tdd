@@ -5,10 +5,15 @@ import com.example.auth.javabooktdd.infrastructure.book.entity.BookEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
+import java.util.Collection;
+import java.util.List;
+
 @Mapper(componentModel = "spring"
         , unmappedTargetPolicy = ReportingPolicy.IGNORE
         , unmappedSourcePolicy = ReportingPolicy.IGNORE
         , typeConversionPolicy = ReportingPolicy.IGNORE)
 public interface BookMapper {
     BookDto toBookDto(BookEntity entity);
+
+    List<BookDto> toBookDtos(Collection<BookEntity> entities);
 }

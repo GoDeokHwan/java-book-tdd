@@ -7,6 +7,8 @@ import com.example.auth.javabooktdd.infrastructure.book.entity.BookEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class BookService {
@@ -17,6 +19,12 @@ public class BookService {
         BookEntity book = BookEntity.of(title, stock);
         return bookMapper.toBookDto(
                 bookRepository.save(book)
+        );
+    }
+
+    public List<BookDto> getTitle(String title) {
+        return bookMapper.toBookDtos(
+                bookRepository.findAllByTitleContaining(title)
         );
     }
 }
