@@ -25,6 +25,11 @@ public class BookReservationFacade {
             throw new CustomException(ApiExceptionEnum.BOOK_ZERO_STOCK);
         }
 
+        // 예약은 한권만 가능하다는 조건
+        boolean isReservationUser = bookReservationService.existReservationUser(userId);
+        if (isReservationUser) {
+            throw new CustomException(ApiExceptionEnum.BOOK_ONE_RESERVATION_USER);
+        }
 
         return null;
     }

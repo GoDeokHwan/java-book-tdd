@@ -6,6 +6,7 @@ import com.example.auth.javabooktdd.domain.book.mapper.BookMapperImpl;
 import com.example.auth.javabooktdd.domain.book.mapper.BookReservationMapper;
 import com.example.auth.javabooktdd.domain.book.mapper.BookReservationMapperImpl;
 import com.example.auth.javabooktdd.domain.book.repository.BookInMemoryRepositoryImpl;
+import com.example.auth.javabooktdd.domain.book.repository.BookReservationInMemoryRepository;
 import com.example.auth.javabooktdd.global.config.exception.ApiExceptionEnum;
 import com.example.auth.javabooktdd.global.config.exception.CustomException;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,7 +29,9 @@ public class BookReservationServiceTest {
                         new BookInMemoryRepositoryImpl(),
                         new BookMapperImpl()
                 ),
-                new BookReservationService(),
+                new BookReservationService(
+                        new BookReservationInMemoryRepository()
+                ),
                 new BookReservationMapperImpl()
         );
     }
@@ -66,5 +69,20 @@ public class BookReservationServiceTest {
         assertEquals(ApiExceptionEnum.BOOK_NOT_FOUND.name(), exception.getCode());
     }
 
+    @DisplayName("4. 이미 예약한 사람이 또 예약하면 안 됨 ")
+    @Test
+    void reservations_are_limited_to_one_ticket () {
+        // given
+        Long bookId = 1L;
+        Long userId = 1L;
+        // when
+        CustomException exception = assertThrows(
+                CustomException.class,
+                () -> bookReservationFacade.createBookReservation(bookId, userId)
+        );
+
+        // then
+        assertEquals(ApiExceptionEnum.BOOK_ONE_RESERVATION_USER.name(), exception.getCode());
+    }
 
 }
