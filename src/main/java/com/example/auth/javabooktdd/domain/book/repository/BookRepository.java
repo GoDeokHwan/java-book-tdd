@@ -9,4 +9,6 @@ public interface BookRepository {
     BookEntity save(BookEntity book);
 
     List<BookEntity> findAllByTitleContaining(String title);
+
+    Optional<BookEntity> findById(Long bookId);
 }

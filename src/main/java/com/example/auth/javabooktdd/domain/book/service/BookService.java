@@ -3,6 +3,8 @@ package com.example.auth.javabooktdd.domain.book.service;
 import com.example.auth.javabooktdd.domain.book.dto.BookDto;
 import com.example.auth.javabooktdd.domain.book.mapper.BookMapper;
 import com.example.auth.javabooktdd.domain.book.repository.BookRepository;
+import com.example.auth.javabooktdd.global.config.exception.ApiExceptionEnum;
+import com.example.auth.javabooktdd.global.config.exception.CustomException;
 import com.example.auth.javabooktdd.infrastructure.book.entity.BookEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,13 @@ public class BookService {
     public List<BookDto> getTitle(String title) {
         return bookMapper.toBookDtos(
                 bookRepository.findAllByTitleContaining(title)
+        );
+    }
+
+    public BookDto getId(Long bookId) {
+        return bookMapper.toBookDto(
+                bookRepository.findById(bookId)
+                        .orElseThrow(() -> new CustomException(ApiExceptionEnum.BOOK_NOT_FOUND))
         );
     }
 }

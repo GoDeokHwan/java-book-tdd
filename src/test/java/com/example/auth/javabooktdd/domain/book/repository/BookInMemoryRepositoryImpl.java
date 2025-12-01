@@ -5,9 +5,10 @@ import com.example.auth.javabooktdd.infrastructure.book.entity.BookEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
-public class BookInMemoryRepositoryImpl implements BookInMemoryRepository {
+public class BookInMemoryRepositoryImpl implements BookRepository {
 
     @Override
     public BookEntity save(BookEntity book) {
@@ -45,6 +46,15 @@ public class BookInMemoryRepositoryImpl implements BookInMemoryRepository {
                 .build()
                 .toEntity();
         return List.of(b1, b2, b3);
+    }
+
+    @Override
+    public Optional<BookEntity> findById(Long bookId) {
+        List<BookEntity> findBook = findAllByTitleContaining(null);
+
+        return findBook.stream()
+                .filter(b -> b.getId().equals(bookId))
+                .findFirst();
     }
 
 
