@@ -65,4 +65,15 @@ public class BookReservationInMemoryRepository implements BookReservationReposit
                 .filter(b -> status.contains(b.getStatus()))
                 .findFirst();
     }
+
+    @Override
+    public BookReservationEntity save(BookReservationEntity bookReservation) {
+        return BookReservationFixture.builder()
+                .id(4L)
+                .userId(bookReservation.getUserId())
+                .bookId(bookReservation.getBookId())
+                .status(bookReservation.getStatus())
+                .createdAt(bookReservation.getCreatedAt())
+                .build().toEntity();
+    }
 }

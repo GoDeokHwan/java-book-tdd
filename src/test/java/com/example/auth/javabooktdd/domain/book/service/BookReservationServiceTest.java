@@ -2,6 +2,7 @@ package com.example.auth.javabooktdd.domain.book.service;
 
 
 import com.example.auth.javabooktdd.applicant.book.BookReservationFacade;
+import com.example.auth.javabooktdd.domain.book.dto.BookReservationDto;
 import com.example.auth.javabooktdd.domain.book.mapper.BookMapperImpl;
 import com.example.auth.javabooktdd.domain.book.mapper.BookReservationMapper;
 import com.example.auth.javabooktdd.domain.book.mapper.BookReservationMapperImpl;
@@ -9,6 +10,7 @@ import com.example.auth.javabooktdd.domain.book.repository.BookInMemoryRepositor
 import com.example.auth.javabooktdd.domain.book.repository.BookReservationInMemoryRepository;
 import com.example.auth.javabooktdd.global.config.exception.ApiExceptionEnum;
 import com.example.auth.javabooktdd.global.config.exception.CustomException;
+import com.example.auth.javabooktdd.infrastructure.book.entity.enumer.ReservationEnum;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,7 +32,8 @@ public class BookReservationServiceTest {
                         new BookMapperImpl()
                 ),
                 new BookReservationService(
-                        new BookReservationInMemoryRepository()
+                        new BookReservationInMemoryRepository(),
+                        new BookReservationMapperImpl()
                 ),
                 new BookReservationMapperImpl()
         );
@@ -83,6 +86,22 @@ public class BookReservationServiceTest {
 
         // then
         assertEquals(ApiExceptionEnum.BOOK_ONE_RESERVATION_USER.name(), exception.getCode());
+    }
+
+    @DisplayName("예약 성공 시 재고 감소")
+    @Test
+    void reservations_success () {
+        // given
+        Long bookId = 1L;
+        Long userId = 3L;
+
+        // when
+        BookReservationDto bookReservationDto = bookReservationFacade.createBookReservation(bookId, userId);
+
+        // then
+        assertEquals(bookReservationDto.getBookId(), bookId);
+        assertEquals(bookReservationDto.getUserId(), userId);
+        assertEquals(bookReservationDto.getStatus(), ReservationEnum.REQUESTED);
     }
 
 }

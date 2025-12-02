@@ -36,4 +36,12 @@ public class BookService {
                         .orElseThrow(() -> new CustomException(ApiExceptionEnum.BOOK_NOT_FOUND))
         );
     }
+
+    public void decreaseBook(Long bookId) {
+        BookEntity book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new CustomException(ApiExceptionEnum.BOOK_NOT_FOUND));
+
+        book.decrease();
+        bookRepository.save(book);
+    }
 }

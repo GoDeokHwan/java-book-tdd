@@ -1,6 +1,7 @@
 package com.example.auth.javabooktdd.applicant.book;
 
 import com.example.auth.javabooktdd.domain.book.dto.BookDto;
+import com.example.auth.javabooktdd.domain.book.dto.BookReservationDto;
 import com.example.auth.javabooktdd.domain.book.mapper.BookReservationMapper;
 import com.example.auth.javabooktdd.domain.book.service.BookReservationService;
 import com.example.auth.javabooktdd.domain.book.service.BookService;
@@ -18,7 +19,7 @@ public class BookReservationFacade {
     private final BookReservationService bookReservationService;
     private final BookReservationMapper bookReservationMapper;
 
-    public BookReservationEntity createBookReservation(Long bookId, Long userId) {
+    public BookReservationDto createBookReservation(Long bookId, Long userId) {
         // 재고 검사
         BookDto book = bookService.getId(bookId);
         if (book.getStock() <= 0) {
@@ -31,6 +32,7 @@ public class BookReservationFacade {
             throw new CustomException(ApiExceptionEnum.BOOK_ONE_RESERVATION_USER);
         }
 
-        return null;
+        bookService.decreaseBook(bookId);
+        return bookReservationService.saveBookReservation(bookId, userId);
     }
 }

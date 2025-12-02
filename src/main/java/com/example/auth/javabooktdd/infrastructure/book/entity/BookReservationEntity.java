@@ -1,5 +1,6 @@
 package com.example.auth.javabooktdd.infrastructure.book.entity;
 
+import com.example.auth.javabooktdd.global.utils.date.DateUtil;
 import com.example.auth.javabooktdd.infrastructure.book.entity.enumer.ReservationEnum;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -18,4 +19,12 @@ public class BookReservationEntity {
     private ReservationEnum status;
     private ZonedDateTime createdAt;
 
+    public static BookReservationEntity of(Long bookId, Long userId) {
+        BookReservationEntity instance = new BookReservationEntity();
+        instance.bookId = bookId;
+        instance.userId = userId;
+        instance.status = ReservationEnum.REQUESTED;
+        instance.createdAt = DateUtil.nowKst();
+        return instance;
+    }
 }

@@ -1,5 +1,7 @@
 package com.example.auth.javabooktdd.infrastructure.book.entity;
 
+import com.example.auth.javabooktdd.global.config.exception.ApiExceptionEnum;
+import com.example.auth.javabooktdd.global.config.exception.CustomException;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,5 +22,12 @@ public class BookEntity {
         book.stock = stock;
         book.isReservable = true;
         return book;
+    }
+
+    public void decrease() {
+        if (this.getStock() < 1) {
+            throw new CustomException(ApiExceptionEnum.BOOK_ZERO_STOCK);
+        }
+        this.stock -= 1;
     }
 }

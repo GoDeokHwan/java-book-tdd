@@ -8,4 +8,6 @@ import java.util.Optional;
 
 public interface BookReservationRepository {
     Optional<BookReservationEntity> findTopByUserIdAndStatusIn(Long userId, Collection<ReservationEnum> status);
+
+    BookReservationEntity save(BookReservationEntity bookReservation);
 }
