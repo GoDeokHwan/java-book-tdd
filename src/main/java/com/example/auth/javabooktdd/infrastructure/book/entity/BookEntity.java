@@ -30,4 +30,8 @@ public class BookEntity {
         }
         this.stock -= 1;
     }
+
+    public void addByReservationCancel() {
+        this.stock += 1;
+    }
 }

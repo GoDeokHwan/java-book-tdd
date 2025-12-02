@@ -27,4 +27,8 @@ public class BookReservationEntity {
         instance.createdAt = DateUtil.nowKst();
         return instance;
     }
+
+    public void cancel() {
+        this.status = ReservationEnum.CANCELED;
+    }
 }

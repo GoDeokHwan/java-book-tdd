@@ -1,7 +1,9 @@
 package com.example.auth.javabooktdd.domain.book.service;
 
 
+import com.example.auth.javabooktdd.applicant.book.BookReservationCancelFacade;
 import com.example.auth.javabooktdd.applicant.book.BookReservationFacade;
+import com.example.auth.javabooktdd.domain.book.dto.BookDto;
 import com.example.auth.javabooktdd.domain.book.dto.BookReservationDto;
 import com.example.auth.javabooktdd.domain.book.mapper.BookMapperImpl;
 import com.example.auth.javabooktdd.domain.book.mapper.BookReservationMapper;
@@ -23,6 +25,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @ExtendWith(MockitoExtension.class)
 public class BookReservationServiceTest {
     private BookReservationFacade bookReservationFacade;
+    private BookReservationCancelFacade bookReservationCancelFacade;
+    private BookService bookService;
 
     @BeforeEach
     void setUp() {
@@ -36,6 +40,20 @@ public class BookReservationServiceTest {
                         new BookReservationMapperImpl()
                 ),
                 new BookReservationMapperImpl()
+        );
+        this.bookReservationCancelFacade = new BookReservationCancelFacade(
+                new BookReservationService(
+                        new BookReservationInMemoryRepository(),
+                        new BookReservationMapperImpl()
+                ),
+                new BookService(
+                        new BookInMemoryRepositoryImpl(),
+                        new BookMapperImpl()
+                )
+        );
+        this.bookService = new BookService(
+                new BookInMemoryRepositoryImpl(),
+                new BookMapperImpl()
         );
     }
 
@@ -88,7 +106,7 @@ public class BookReservationServiceTest {
         assertEquals(ApiExceptionEnum.BOOK_ONE_RESERVATION_USER.name(), exception.getCode());
     }
 
-    @DisplayName("예약 성공 시 재고 감소")
+    @DisplayName("5. 예약 성공 시 재고 감소")
     @Test
     void reservations_success () {
         // given
@@ -99,9 +117,42 @@ public class BookReservationServiceTest {
         BookReservationDto bookReservationDto = bookReservationFacade.createBookReservation(bookId, userId);
 
         // then
-        assertEquals(bookReservationDto.getBookId(), bookId);
-        assertEquals(bookReservationDto.getUserId(), userId);
-        assertEquals(bookReservationDto.getStatus(), ReservationEnum.REQUESTED);
+        assertEquals(bookId, bookReservationDto.getBookId());
+        assertEquals(userId, bookReservationDto.getUserId());
+        assertEquals(ReservationEnum.REQUESTED, bookReservationDto.getStatus());
     }
+
+    @DisplayName("6. 예약취소시 재고 복구")
+    @Test
+    void reservations_cancel() {
+        // given
+        Long bookId = 1L;
+        Long userId = 4L;
+        BookReservationDto bookReservationDto = bookReservationFacade.createBookReservation(bookId, userId);
+        BookDto bookDto = bookService.getId(bookId);
+
+        // when
+        BookReservationDto cancelReservation = bookReservationCancelFacade.cancelReservation(bookReservationDto.getId());
+        BookDto cancelBook = bookService.getId(bookId);
+
+        assertEquals(bookDto.getStock() + 1, cancelBook.getStock());
+        assertEquals(ReservationEnum.CANCELED, cancelReservation.getStatus());
+    }
+
+    @DisplayName("6. 예약취소시 재고 복구( 예약 정보를 못 찾았을 때)")
+    @Test
+    void reservations_cancel_reservation_not_found() {
+        // given
+        Long bookRequestId = 99L;
+
+        // when
+        CustomException exception = assertThrows(
+                CustomException.class,
+                () -> bookReservationCancelFacade.cancelReservation(bookRequestId));
+
+        assertEquals(ApiExceptionEnum.BOOK_RESERVATION_NOT_FOUD.name(), exception.getCode());
+    }
+
+
 
 }

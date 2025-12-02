@@ -44,4 +44,11 @@ public class BookService {
         book.decrease();
         bookRepository.save(book);
     }
+
+    public void cancelReservation(Long bookId) {
+        BookEntity book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new CustomException(ApiExceptionEnum.BOOK_NOT_FOUND));
+        book.addByReservationCancel();
+        bookRepository.save(book);
+    }
 }

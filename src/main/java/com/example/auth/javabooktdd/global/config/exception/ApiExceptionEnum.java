@@ -13,7 +13,7 @@ public enum ApiExceptionEnum {
     , BOOK_NOT_FOUND(HttpStatus.NOT_FOUND, "책을 찾을 수 없습니다.")
 
     , BOOK_ONE_RESERVATION_USER(HttpStatus.BAD_REQUEST, "책은 한권만 예약이 가능합니다.")
-
+    , BOOK_RESERVATION_NOT_FOUD(HttpStatus.NOT_FOUND, "예약된 책 정보를 찾을 수 없습니다.")
     ;
 
     private HttpStatus status;
