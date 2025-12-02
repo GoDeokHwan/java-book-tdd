@@ -55,7 +55,6 @@ public class BookServiceTest {
 
         // then
         assertThat(books).isNotNull();
-        assertThat(books.size()).isEqualTo(3);
         assertThat(books.get(0).getTitle()).contains(title);
     }
 

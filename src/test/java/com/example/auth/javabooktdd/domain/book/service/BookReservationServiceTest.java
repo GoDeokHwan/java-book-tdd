@@ -39,8 +39,7 @@ public class BookReservationServiceTest {
                 new BookReservationService(
                         new BookReservationInMemoryRepository(),
                         new BookReservationMapperImpl()
-                ),
-                new BookReservationMapperImpl()
+                )
         );
         this.bookReservationCancelFacade = new BookReservationCancelFacade(
                 new BookReservationService(
@@ -66,7 +65,7 @@ public class BookReservationServiceTest {
     @Test
     void unable_to_purchase_due_to_out_of_stock () {
         // given
-        Long bookId = 2L;
+        Long bookId = 3L;
         Long userId = 1L;
 
         // when
@@ -204,6 +203,20 @@ public class BookReservationServiceTest {
                 () -> bookReservationService.updateBookApproved(bookReservationDto.getId()));
 
         assertEquals(ApiExceptionEnum.BOOK_APPROVAL_STATUS_FAIL.name(), exception.getCode());
+    }
+
+    @DisplayName("8. Book.isReservable = false면 예약 불가")
+    @Test
+    void book_isReservable_false() {
+        // given
+        Long bookId = 2L;
+        Long userId = 5L;
+        // when
+        CustomException exception = assertThrows(
+                CustomException.class,
+                () -> bookReservationFacade.createBookReservation(bookId, userId));
+
+        assertEquals(ApiExceptionEnum.BOOK_RESERVATION_POSSIBLE.name(), exception.getCode());
     }
 
 }

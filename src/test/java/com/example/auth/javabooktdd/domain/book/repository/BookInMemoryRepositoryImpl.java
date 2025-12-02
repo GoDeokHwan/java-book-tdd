@@ -24,14 +24,14 @@ public class BookInMemoryRepositoryImpl implements BookRepository {
             bookEntities.add(BookFixture.builder()
                     .id(2L)
                     .title("Junit In Action TDD")
-                    .stock(0)
+                    .stock(1)
                     .isReservable(false)
                     .build()
                     .toEntity());
             bookEntities.add(BookFixture.builder()
                     .id(3L)
                     .title("Clean Code TDD")
-                    .stock(10)
+                    .stock(0)
                     .isReservable(true)
                     .build()
                     .toEntity());

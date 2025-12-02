@@ -17,13 +17,15 @@ import org.springframework.stereotype.Component;
 public class BookReservationFacade {
     private final BookService bookService;
     private final BookReservationService bookReservationService;
-    private final BookReservationMapper bookReservationMapper;
 
     public BookReservationDto createBookReservation(Long bookId, Long userId) {
         // 재고 검사
         BookDto book = bookService.getId(bookId);
         if (book.getStock() <= 0) {
             throw new CustomException(ApiExceptionEnum.BOOK_ZERO_STOCK);
+        }
+        if (!book.getIsReservable()) {
+            throw new CustomException(ApiExceptionEnum.BOOK_RESERVATION_POSSIBLE);
         }
 
         // 예약은 한권만 가능하다는 조건
