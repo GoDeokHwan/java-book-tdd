@@ -40,7 +40,8 @@ public class BookInMemoryRepositoryImpl implements BookRepository {
 
     @Override
     public BookEntity save(BookEntity book) {
-        Long nextId = bookEntities.stream()
+        Long nextId = book.getId() != null ? book.getId() :
+                bookEntities.stream()
                 .mapToLong(BookEntity::getId)
                 .max()
                 .orElseGet(() -> 0L) + 1;

@@ -15,8 +15,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -71,6 +70,37 @@ class BookReservationControllerTest {
                         .value(ApiExceptionEnum.BOOK_ONE_RESERVATION_USER.getMessage())
                 )
         ;
+    }
+
+    @DisplayName("예약 취소")
+    @Test
+    void cancel_reservation () throws Exception {
+        // given
+        Long reservationId = 1L;
+
+        // when
+        mockMvc.perform(
+                delete(String.format("/api/book/reservation/%d/cancel", reservationId))
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+        .andExpect(status().isOk());
+    }
+
+    @DisplayName("승인")
+    @Test
+    void approve_reservation () throws Exception {
+        // given
+        Long reservationId = 2L;
+
+        // when
+        mockMvc.perform(
+                        patch(String.format("/api/book/reservation/%d/approved", reservationId))
+                        .content("{}")
+                        .contentType(MediaType.APPLICATION_JSON)
+        )
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.id").value(reservationId))
+        .andExpect(jsonPath("$.status").value(ReservationEnum.APPROVED.name()));
     }
 
 }

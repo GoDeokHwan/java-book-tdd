@@ -67,7 +67,9 @@ public class BookReservationInMemoryRepository implements BookReservationReposit
 
     @Override
     public BookReservationEntity save(BookReservationEntity bookReservation) {
-        long nextId = bookReservationEntities.stream()
+        long nextId = bookReservation.getId() != null ?
+                bookReservation.getId()
+                : bookReservationEntities.stream()
                 .mapToLong(BookReservationEntity::getId)
                 .max()
                 .orElse(0L) + 1;

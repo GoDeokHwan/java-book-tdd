@@ -52,7 +52,7 @@ public class BookReservationServiceTest {
     @Test
     void not_found_book_out_of_stock () {
         // given
-        Long bookId = 4L;
+        Long bookId = 99L;
         Long userId = 1L;
         // when
         CustomException exception = assertThrows(

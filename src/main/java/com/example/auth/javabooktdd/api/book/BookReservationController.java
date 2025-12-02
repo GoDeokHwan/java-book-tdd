@@ -7,9 +7,7 @@ import com.example.auth.javabooktdd.domain.book.dto.BookReservationDto;
 import com.example.auth.javabooktdd.domain.book.service.BookReservationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,5 +16,19 @@ public class BookReservationController {
     private final BookReservationService bookReservationService;
     private final BookReservationCancelFacade bookReservationCancelFacade;
 
+    @DeleteMapping("/{reservationId}/cancel")
+    public ResponseEntity<Void> cancelReservation(
+            @PathVariable Long reservationId
+    ) {
+        bookReservationCancelFacade.cancelReservation(reservationId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/{reservationId}/approved")
+    public ResponseEntity<BookReservationDto> bookReservationApprove(
+            @PathVariable Long reservationId
+    ) {
+        return ResponseEntity.ok(bookReservationService.updateBookApproved(reservationId));
+    }
 
 }
