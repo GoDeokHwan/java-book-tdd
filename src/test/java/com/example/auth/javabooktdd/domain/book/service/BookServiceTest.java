@@ -3,7 +3,6 @@ package com.example.auth.javabooktdd.domain.book.service;
 import com.example.auth.javabooktdd.domain.book.dto.BookDto;
 import com.example.auth.javabooktdd.domain.book.mapper.BookMapperImpl;
 import com.example.auth.javabooktdd.domain.book.repository.BookInMemoryRepositoryImpl;
-import com.example.auth.javabooktdd.global.config.condition.DisabledOnTestProfile;
 import com.example.auth.javabooktdd.global.config.repository.TestRepositoryConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -19,8 +18,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
-@DisabledOnTestProfile("real")
 @SpringBootTest
 @Import(TestRepositoryConfig.class)
 public class BookServiceTest {

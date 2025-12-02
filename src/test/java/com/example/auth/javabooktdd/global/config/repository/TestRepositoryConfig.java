@@ -7,10 +7,7 @@ import com.example.auth.javabooktdd.domain.book.repository.BookReservationReposi
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.Profile;
-import org.springframework.test.context.ActiveProfiles;
 
-@Profile("test")
 @TestConfiguration
 public class TestRepositoryConfig {
     @Primary
