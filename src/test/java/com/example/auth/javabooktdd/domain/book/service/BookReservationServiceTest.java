@@ -5,61 +5,31 @@ import com.example.auth.javabooktdd.applicant.book.BookReservationCancelFacade;
 import com.example.auth.javabooktdd.applicant.book.BookReservationFacade;
 import com.example.auth.javabooktdd.domain.book.dto.BookDto;
 import com.example.auth.javabooktdd.domain.book.dto.BookReservationDto;
-import com.example.auth.javabooktdd.domain.book.mapper.BookMapperImpl;
-import com.example.auth.javabooktdd.domain.book.mapper.BookReservationMapper;
-import com.example.auth.javabooktdd.domain.book.mapper.BookReservationMapperImpl;
-import com.example.auth.javabooktdd.domain.book.repository.BookInMemoryRepositoryImpl;
-import com.example.auth.javabooktdd.domain.book.repository.BookReservationInMemoryRepository;
 import com.example.auth.javabooktdd.global.config.exception.ApiExceptionEnum;
 import com.example.auth.javabooktdd.global.config.exception.CustomException;
+import com.example.auth.javabooktdd.global.config.repository.TestRepositoryConfig;
 import com.example.auth.javabooktdd.infrastructure.book.entity.enumer.ReservationEnum;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
+@Import(TestRepositoryConfig.class)
 public class BookReservationServiceTest {
+    @Autowired
     private BookReservationFacade bookReservationFacade;
+    @Autowired
     private BookReservationCancelFacade bookReservationCancelFacade;
+    @Autowired
     private BookService bookService;
+    @Autowired
     private BookReservationService bookReservationService;
 
-    @BeforeEach
-    void setUp() {
-        this.bookReservationFacade = new BookReservationFacade(
-                new BookService(
-                        new BookInMemoryRepositoryImpl(),
-                        new BookMapperImpl()
-                ),
-                new BookReservationService(
-                        new BookReservationInMemoryRepository(),
-                        new BookReservationMapperImpl()
-                )
-        );
-        this.bookReservationCancelFacade = new BookReservationCancelFacade(
-                new BookReservationService(
-                        new BookReservationInMemoryRepository(),
-                        new BookReservationMapperImpl()
-                ),
-                new BookService(
-                        new BookInMemoryRepositoryImpl(),
-                        new BookMapperImpl()
-                )
-        );
-        this.bookService = new BookService(
-                new BookInMemoryRepositoryImpl(),
-                new BookMapperImpl()
-        );
-        this.bookReservationService = new BookReservationService(
-                new BookReservationInMemoryRepository(),
-                new BookReservationMapperImpl()
-        );
-    }
 
     @DisplayName("3. 재고가 0이어서 구매 불가")
     @Test

@@ -3,29 +3,26 @@ package com.example.auth.javabooktdd.domain.book.service;
 import com.example.auth.javabooktdd.domain.book.dto.BookDto;
 import com.example.auth.javabooktdd.domain.book.mapper.BookMapperImpl;
 import com.example.auth.javabooktdd.domain.book.repository.BookInMemoryRepositoryImpl;
+import com.example.auth.javabooktdd.global.config.repository.TestRepositoryConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
+@Import(TestRepositoryConfig.class)
 public class BookServiceTest {
-    @InjectMocks
+    @Autowired
     private BookService bookService;
-
-    @BeforeEach
-    void setUp() {
-        this.bookService = new BookService(
-                new BookInMemoryRepositoryImpl(),
-                new BookMapperImpl()
-        );
-    }
 
     @DisplayName("1. 책 생성")
     @Test
