@@ -46,4 +46,12 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+    systemProperty("spring.profiles.active", "test")
+}
+
+tasks.register("testRealDb", Test) {
+    group = "verification"
+    description = "Run tests with real DB profile"
+    systemProperty "spring.profiles.active", "real"
+    useJUnitPlatform()
 }

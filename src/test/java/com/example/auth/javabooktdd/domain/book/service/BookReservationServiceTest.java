@@ -5,6 +5,7 @@ import com.example.auth.javabooktdd.applicant.book.BookReservationCancelFacade;
 import com.example.auth.javabooktdd.applicant.book.BookReservationFacade;
 import com.example.auth.javabooktdd.domain.book.dto.BookDto;
 import com.example.auth.javabooktdd.domain.book.dto.BookReservationDto;
+import com.example.auth.javabooktdd.global.config.condition.DisabledOnTestProfile;
 import com.example.auth.javabooktdd.global.config.exception.ApiExceptionEnum;
 import com.example.auth.javabooktdd.global.config.exception.CustomException;
 import com.example.auth.javabooktdd.global.config.repository.TestRepositoryConfig;
@@ -14,12 +15,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@DisabledOnTestProfile("test")
+@ActiveProfiles("real")
 @SpringBootTest
-@Import(TestRepositoryConfig.class)
+//@Import(TestRepositoryConfig.class)
 public class BookReservationServiceTest {
     @Autowired
     private BookReservationFacade bookReservationFacade;

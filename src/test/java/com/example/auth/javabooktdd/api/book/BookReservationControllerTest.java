@@ -1,6 +1,7 @@
 package com.example.auth.javabooktdd.api.book;
 
 import com.example.auth.javabooktdd.api.book.dto.SaveReservationRequest;
+import com.example.auth.javabooktdd.global.config.condition.DisabledOnTestProfile;
 import com.example.auth.javabooktdd.global.config.exception.ApiExceptionEnum;
 import com.example.auth.javabooktdd.global.config.repository.TestRepositoryConfig;
 import com.example.auth.javabooktdd.infrastructure.book.entity.enumer.ReservationEnum;
@@ -19,6 +20,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@DisabledOnTestProfile("real")
 @SpringBootTest
 @AutoConfigureMockMvc
 @Import(TestRepositoryConfig.class)
