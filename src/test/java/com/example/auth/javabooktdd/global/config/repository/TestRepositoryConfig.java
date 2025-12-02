@@ -6,15 +6,16 @@ import com.example.auth.javabooktdd.domain.book.repository.BookReservationInMemo
 import com.example.auth.javabooktdd.domain.book.repository.BookReservationRepository;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 
 @TestConfiguration
 public class TestRepositoryConfig {
-
+    @Primary
     @Bean
     public BookRepository bookRepository() {
         return new BookInMemoryRepositoryImpl();
     }
-
+    @Primary
     @Bean
     public BookReservationRepository bookReservationRepository() {
         return new BookReservationInMemoryRepository();

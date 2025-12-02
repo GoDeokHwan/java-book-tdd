@@ -1,1 +1,12 @@
-spring.application.name=java-book-tdd
+spring:
+  application:
+    name: java-book-tdd
+  datasource:
+    url: jdbc:postgresql://localhost:5439/testdb
+    hikari:
+      username: test_user
+      password: test11!!
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true

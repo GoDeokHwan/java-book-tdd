@@ -8,15 +8,18 @@ import com.example.auth.javabooktdd.global.config.exception.CustomException;
 import com.example.auth.javabooktdd.infrastructure.book.entity.BookEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Transactional(readOnly = true)
 @Service
 @RequiredArgsConstructor
 public class BookService {
     private final BookRepository bookRepository;
     private final BookMapper bookMapper;
 
+    @Transactional
     public BookDto createBook(String title, Integer stock) {
         BookEntity book = BookEntity.of(title, stock);
         return bookMapper.toBookDto(
@@ -37,6 +40,7 @@ public class BookService {
         );
     }
 
+    @Transactional
     public void decreaseBook(Long bookId) {
         BookEntity book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new CustomException(ApiExceptionEnum.BOOK_NOT_FOUND));
@@ -45,6 +49,7 @@ public class BookService {
         bookRepository.save(book);
     }
 
+    @Transactional
     public void cancelReservation(Long bookId) {
         BookEntity book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new CustomException(ApiExceptionEnum.BOOK_NOT_FOUND));

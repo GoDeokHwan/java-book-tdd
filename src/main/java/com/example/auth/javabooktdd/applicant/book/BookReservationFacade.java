@@ -11,13 +11,16 @@ import com.example.auth.javabooktdd.infrastructure.book.entity.BookEntity;
 import com.example.auth.javabooktdd.infrastructure.book.entity.BookReservationEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional(readOnly = true)
 @Component
 @RequiredArgsConstructor
 public class BookReservationFacade {
     private final BookService bookService;
     private final BookReservationService bookReservationService;
 
+    @Transactional
     public BookReservationDto createBookReservation(Long bookId, Long userId) {
         // 재고 검사
         BookDto book = bookService.getId(bookId);

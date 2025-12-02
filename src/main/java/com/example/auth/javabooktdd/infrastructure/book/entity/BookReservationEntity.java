@@ -4,6 +4,7 @@ import com.example.auth.javabooktdd.global.config.exception.ApiExceptionEnum;
 import com.example.auth.javabooktdd.global.config.exception.CustomException;
 import com.example.auth.javabooktdd.global.utils.date.DateUtil;
 import com.example.auth.javabooktdd.infrastructure.book.entity.enumer.ReservationEnum;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,13 +13,21 @@ import lombok.NoArgsConstructor;
 import java.time.ZonedDateTime;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "book_reservations")
 public class BookReservationEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "book_id")
     private Long bookId;
+    @Column(name = "user_id")
     private Long userId;
+    @Enumerated(EnumType.STRING)
     private ReservationEnum status;
+    @Column(name = "created_at")
     private ZonedDateTime createdAt;
 
     public static BookReservationEntity of(Long bookId, Long userId) {

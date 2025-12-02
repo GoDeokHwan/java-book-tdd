@@ -9,7 +9,9 @@ import com.example.auth.javabooktdd.infrastructure.book.entity.BookReservationEn
 import com.example.auth.javabooktdd.infrastructure.book.entity.enumer.ReservationEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional(readOnly = true)
 @Service
 @RequiredArgsConstructor
 public class BookReservationService {
@@ -21,6 +23,7 @@ public class BookReservationService {
                 .isPresent();
     }
 
+    @Transactional
     public BookReservationDto saveBookReservation(Long bookId, Long userId) {
         BookReservationEntity bookReservation = BookReservationEntity.of(bookId, userId);
         return bookReservationMapper.toDto(
@@ -28,6 +31,7 @@ public class BookReservationService {
         );
     }
 
+    @Transactional
     public BookReservationDto cancelReservation(Long id) {
         BookReservationEntity bookReservation = bookReservationRepository.findById(id)
                 .orElseThrow(() -> new CustomException(ApiExceptionEnum.BOOK_RESERVATION_NOT_FOUD));
@@ -37,6 +41,7 @@ public class BookReservationService {
         );
     }
 
+    @Transactional
     public BookReservationDto updateBookApproved(Long id) {
         BookReservationEntity bookReservation = bookReservationRepository.findById(id)
                 .orElseThrow(() -> new CustomException(ApiExceptionEnum.BOOK_RESERVATION_NOT_FOUD));
