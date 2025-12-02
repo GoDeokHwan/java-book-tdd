@@ -11,7 +11,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.hamcrest.Matchers.containsString;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -39,6 +40,22 @@ public class BookControllerTest {
         .andExpect(jsonPath("$.title").value(request.title()))
         .andExpect(jsonPath("$.stock").value(request.stock().toString()))
         .andExpect(jsonPath("$.isReservable").value(true));
+    }
+
+    @DisplayName("2. 책 제목으로 검색")
+    @Test
+    void get_book_title_search() throws Exception {
+        // given
+        String title = "TDD";
+
+        // when
+        mockMvc.perform(
+                get("/api/book/title")
+                        .queryParam("title", title)
+                        .contentType(MediaType.APPLICATION_JSON)
+        )
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].title").value(containsString(title)));
     }
 
 }

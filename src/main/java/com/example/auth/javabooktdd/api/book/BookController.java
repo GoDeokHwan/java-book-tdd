@@ -5,9 +5,9 @@ import com.example.auth.javabooktdd.domain.book.dto.BookDto;
 import com.example.auth.javabooktdd.domain.book.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,6 +18,13 @@ public class BookController {
     @PostMapping()
     public ResponseEntity<BookDto> createBook(BookCreateRequest request) {
         return ResponseEntity.ok(bookService.createBook(request.title(), request.stock()));
+    }
+
+    @GetMapping("/title")
+    public ResponseEntity<List<BookDto>> getBooksByTitle(@RequestParam String title) {
+        return ResponseEntity.ok(
+                bookService.getTitle(title)
+        );
     }
 
 }
