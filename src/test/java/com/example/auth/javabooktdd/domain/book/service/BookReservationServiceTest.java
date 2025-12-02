@@ -27,6 +27,7 @@ public class BookReservationServiceTest {
     private BookReservationFacade bookReservationFacade;
     private BookReservationCancelFacade bookReservationCancelFacade;
     private BookService bookService;
+    private BookReservationService bookReservationService;
 
     @BeforeEach
     void setUp() {
@@ -54,6 +55,10 @@ public class BookReservationServiceTest {
         this.bookService = new BookService(
                 new BookInMemoryRepositoryImpl(),
                 new BookMapperImpl()
+        );
+        this.bookReservationService = new BookReservationService(
+                new BookReservationInMemoryRepository(),
+                new BookReservationMapperImpl()
         );
     }
 
@@ -153,6 +158,52 @@ public class BookReservationServiceTest {
         assertEquals(ApiExceptionEnum.BOOK_RESERVATION_NOT_FOUD.name(), exception.getCode());
     }
 
+    @DisplayName("7. 한 번 승인된 예약은 취소 불가 ")
+    @Test
+    void reservations_cancel_status_approved_exception() {
+        // given
+        Long bookRequestId = 4L;
 
+        // when
+        CustomException exception = assertThrows(
+                CustomException.class,
+                () -> bookReservationCancelFacade.cancelReservation(bookRequestId));
+
+
+        //then
+        assertEquals(ApiExceptionEnum.BOOK_APPROVAL_RESERVATION_CANCEL_FAIL.name(), exception.getCode());
+    }
+
+    @DisplayName("7. 한 번 승인된 예약은 취소 불가( 승인하기 )")
+    @Test
+    void reservations_approved() {
+        // given
+        Long bookId = 1L;
+        Long userId = 5L;
+        BookReservationDto bookReservationDto = bookReservationFacade.createBookReservation(bookId, userId);
+
+        // when
+        BookReservationDto approved = bookReservationService.updateBookApproved(bookReservationDto.getId());
+
+        assertEquals(bookReservationDto.getBookId(), approved.getBookId());
+        assertEquals(ReservationEnum.APPROVED, approved.getStatus());
+    }
+
+    @DisplayName("7. 한 번 승인된 예약은 취소 불가( 승인하지만 취소되어서 오류 )")
+    @Test
+    void reservations_approved_status_cancel_exception() {
+        // given
+        Long bookId = 1L;
+        Long userId = 4L;
+        BookReservationDto bookReservationDto = bookReservationFacade.createBookReservation(bookId, userId);
+        BookReservationDto cancelReservation = bookReservationCancelFacade.cancelReservation(bookReservationDto.getId());
+
+        // when
+        CustomException exception = assertThrows(
+                CustomException.class,
+                () -> bookReservationService.updateBookApproved(bookReservationDto.getId()));
+
+        assertEquals(ApiExceptionEnum.BOOK_APPROVAL_STATUS_FAIL.name(), exception.getCode());
+    }
 
 }

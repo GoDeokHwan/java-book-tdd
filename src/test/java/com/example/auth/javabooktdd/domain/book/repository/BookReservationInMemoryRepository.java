@@ -29,7 +29,7 @@ public class BookReservationInMemoryRepository implements BookReservationReposit
             );
             bookReservationEntities.add(
                     BookReservationFixture.builder()
-                            .id(1L)
+                            .id(2L)
                             .userId(1L)
                             .bookId(1L)
                             .status(ReservationEnum.REQUESTED)
@@ -38,7 +38,7 @@ public class BookReservationInMemoryRepository implements BookReservationReposit
             );
             bookReservationEntities.add(
                     BookReservationFixture.builder()
-                            .id(2L)
+                            .id(3L)
                             .userId(1L)
                             .bookId(1L)
                             .status(ReservationEnum.CANCELED)
@@ -47,7 +47,7 @@ public class BookReservationInMemoryRepository implements BookReservationReposit
             );
             bookReservationEntities.add(
                     BookReservationFixture.builder()
-                            .id(3L)
+                            .id(4L)
                             .userId(2L)
                             .bookId(1L)
                             .status(ReservationEnum.APPROVED)

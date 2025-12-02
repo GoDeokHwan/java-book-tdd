@@ -36,4 +36,13 @@ public class BookReservationService {
                 bookReservationRepository.save(bookReservation)
         );
     }
+
+    public BookReservationDto updateBookApproved(Long id) {
+        BookReservationEntity bookReservation = bookReservationRepository.findById(id)
+                .orElseThrow(() -> new CustomException(ApiExceptionEnum.BOOK_RESERVATION_NOT_FOUD));
+        bookReservation.approved();
+        return bookReservationMapper.toDto(
+                bookReservationRepository.save(bookReservation)
+        );
+    }
 }

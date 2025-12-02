@@ -16,4 +16,12 @@ public enum ReservationEnum {
     private String description;
 
     public static Collection<ReservationEnum> USE_STATUS = List.of(REQUESTED, APPROVED);
+
+    public boolean isApproved() {
+        return this.equals(APPROVED);
+    }
+
+    public boolean isRequested() {
+        return this.equals(REQUESTED);
+    }
 }

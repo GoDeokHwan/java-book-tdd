@@ -1,5 +1,7 @@
 package com.example.auth.javabooktdd.infrastructure.book.entity;
 
+import com.example.auth.javabooktdd.global.config.exception.ApiExceptionEnum;
+import com.example.auth.javabooktdd.global.config.exception.CustomException;
 import com.example.auth.javabooktdd.global.utils.date.DateUtil;
 import com.example.auth.javabooktdd.infrastructure.book.entity.enumer.ReservationEnum;
 import lombok.AccessLevel;
@@ -29,6 +31,24 @@ public class BookReservationEntity {
     }
 
     public void cancel() {
+        if (this.isApproved()) {
+            throw new CustomException(ApiExceptionEnum.BOOK_APPROVAL_RESERVATION_CANCEL_FAIL);
+        }
         this.status = ReservationEnum.CANCELED;
+    }
+
+    private boolean isApproved() {
+        return this.getStatus().isApproved();
+    }
+
+    public void approved() {
+        if (!this.isRequested()) {
+            throw new CustomException(ApiExceptionEnum.BOOK_APPROVAL_STATUS_FAIL);
+        }
+        this.status = ReservationEnum.APPROVED;
+    }
+
+    private boolean isRequested() {
+        return this.getStatus().isRequested();
     }
 }
