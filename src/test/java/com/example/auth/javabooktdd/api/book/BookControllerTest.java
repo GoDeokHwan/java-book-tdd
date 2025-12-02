@@ -2,6 +2,7 @@ package com.example.auth.javabooktdd.api.book;
 
 import com.example.auth.javabooktdd.api.book.dto.BookCreateRequest;
 import com.example.auth.javabooktdd.global.config.repository.TestRepositoryConfig;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class BookControllerTest {
     @Autowired
     MockMvc mockMvc;
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @DisplayName("1. 책추가")
     @Test
@@ -32,8 +34,7 @@ public class BookControllerTest {
         // when
         mockMvc.perform(
                 post("/api/book")
-                        .param("title", request.title())
-                        .param("stock", request.stock().toString())
+                        .content(objectMapper.writeValueAsString(request))
                         .contentType(MediaType.APPLICATION_JSON)
         )
         .andExpect(status().isOk())
@@ -55,6 +56,7 @@ public class BookControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
         )
         .andExpect(status().isOk())
+        .andExpect(jsonPath("$").isArray())
         .andExpect(jsonPath("$[0].title").value(containsString(title)));
     }
 

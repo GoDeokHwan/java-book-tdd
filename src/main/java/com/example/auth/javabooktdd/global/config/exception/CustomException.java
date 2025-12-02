@@ -17,4 +17,11 @@ public class CustomException extends RuntimeException {
         this.error = exception;
     }
 
+    public CustomException(ApiExceptionEnum exception, String message) {
+        this.code = exception.name();
+        this.message = message != null ? message : exception.getMessage();
+        this.status = exception.getStatus();
+        this.error = exception;
+    }
+
 }

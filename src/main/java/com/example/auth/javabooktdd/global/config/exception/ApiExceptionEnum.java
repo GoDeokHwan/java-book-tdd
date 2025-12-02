@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 public enum ApiExceptionEnum {
     SUCCESS(HttpStatus.OK, "success")
 
+    , INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Server error. Please try again.")
+
     , BOOK_ZERO_STOCK(HttpStatus.BAD_REQUEST, "재고가 없습니다.")
     , BOOK_NOT_FOUND(HttpStatus.NOT_FOUND, "책을 찾을 수 없습니다.")
     , BOOK_RESERVATION_POSSIBLE(HttpStatus.BAD_REQUEST, "예약 불가 상품입니다.")
